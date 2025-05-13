@@ -1,15 +1,15 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <form-categoria msg="Cadastro de categorias"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FormCategoria from './components/FormCategoria.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FormCategoria
   }
 }
 </script>

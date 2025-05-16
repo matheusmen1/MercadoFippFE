@@ -6,10 +6,16 @@
     <div v-if="formOn">
       <form @submit.prevent="this.gravar()">
       <label for="id">ID</label>
-      <input disabled type="text" id="id" v-model="id" placeholder="ID da categoria">
+      <input disabled type="text" id="id" v-model="id" placeholder="ID do usuário">
 
       <label for="nome">Nome</label>
-      <input type="text" id="nome" v-model="nome" placeholder="Digite o nome da categoria">
+      <input type="text" id="nome" v-model="nome" placeholder="Digite o seu nome">
+
+      <label for="nome">Senha</label>
+      <input type="text" id="senha" v-model="senha" placeholder="Digite a sua senha">
+
+      <label for="nome">Nível</label>
+      <input type="text" id="nivel" v-model="nivel" placeholder="Digite seu nível">
 
       <input type="submit" value="Cadastrar">
     </form>
@@ -18,23 +24,27 @@
   </div>
 
   <div style="display:flex; justify-content:flex-end ;">
-    <button @click="this.mostrarForm(true)">Nova Categoria</button>
+    <button @click="this.mostrarForm(true)">Novo Usuário</button>
   </div>
   <table id="customers">
     <thead>
       <tr>
       <th>ID</th>
       <th>Nome</th>
+      <th>Senha</th>
+      <th>Nível</th>
       <th colspan="2">Ações</th>
     </tr>
     </thead>
     
     <tbody>
-      <tr v-for="cat in categorias">
-      <td>{{cat.id}}</td>
-      <td>{{cat.nome}}</td>
-      <td><button @click="this.alterar(cat.id)">Alterar</button></td>
-      <td><button @click="this.apagar(cat.id)">Apagar</button></td>
+      <tr v-for="usu in usuarios">
+      <td>{{usu.id}}</td>
+      <td>{{usu.nome}}</td>
+      <td>{{usu.senha}}</td>
+      <td>{{usu.nivel}}</td>
+      <td><button @click="this.alterar(usu.id)">Alterar</button></td>
+      <td><button @click="this.apagar(usu.id)">Apagar</button></td>
     </tr>
     </tbody>
     
@@ -50,8 +60,8 @@ export default {
     msg: String
   },
   data(){
-    return {id:0, nome:"", formOn:false,
-      categorias:[]
+    return {id:0, nome:"", senha:"", nivel:0, formOn:false,
+      usuarios:[]
     }
     
   },
@@ -63,9 +73,10 @@ export default {
     },
     gravar(){
 
-      const url = 'http://localhost:8080/apis/categoria';
+      const url = 'http://localhost:8080/apis/usuario';
       const data = {
-        id: this.id, nome: this.nome
+        id: this.id, nome: this.nome,
+        senha: this.senha, nivel: this.nivel
       };
       if (id > 0)
       {
@@ -90,23 +101,27 @@ export default {
       }
       this.id = 0;
       this.nome = "";
+      this.senha = "";
+      this.nivel = 0;
       this.mostrarForm(false);
     },
     alterar(id){
       this.formOn = true;
-      axios.get("http://localhost:8080/apis/categoria/"+id)
+      axios.get("http://localhost:8080/apis/usuario/"+id)
       .then(result =>{
 
-        const categoria = result.data;
-        this.id = categoria.id;
-        this.nome = categoria.nome;
+        const usuario = result.data;
+        this.id = usuario.id;
+        this.nome = usuario.nome;
+        this.senha = usuario.senha;
+        this.nivel = usuario.nivel;
       })
       .catch(error =>{
 
       })
     },
     apagar(id){
-      axios.delete("http://localhost:8080/apis/categoria/"+id)
+      axios.delete("http://localhost:8080/apis/usuario/"+id)
       .then(result =>{
         this.carregarDados()
       })
@@ -115,9 +130,9 @@ export default {
       })
     }, 
     carregarDados(){
-      axios.get("http://localhost:8080/apis/categoria")
+      axios.get("http://localhost:8080/apis/usuario")
       .then(result =>{
-        this.categorias = result.data
+        this.usuarios = result.data
       })
       .catch(error =>{
 

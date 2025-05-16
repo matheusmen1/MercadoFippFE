@@ -1,15 +1,15 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <form-categoria msg="Cadastro de categorias"/>
+  <form-usuario msg = "Cadastro de Usuários"/>
 </template>
 
 <script>
 import FormCategoria from './components/FormCategoria.vue'
-
+import FormUsuario from './components/FormUsuario.vue'
 export default {
   name: 'App',
   components: {
-    FormCategoria
+    FormUsuario
   }
 }
 </script>

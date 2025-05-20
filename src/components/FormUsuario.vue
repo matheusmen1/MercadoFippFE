@@ -55,7 +55,7 @@
 <script>
 import axios from 'axios';
 export default {
-  name: 'HelloWorld',
+  name: "FormUsuario",
   props: {
     msg: String
   },
@@ -142,7 +142,6 @@ export default {
   },
   mounted(){
     this.carregarDados();
-    console.log('Sucesso:', response.data);
   }
 }
 </script>

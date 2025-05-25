@@ -1,193 +1,258 @@
 <template>
-  
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  
-    <div v-if="formOn">
-      <form @submit.prevent="this.gravar()">
-      <label for="id">ID</label>
-      <input disabled type="text" id="id" v-model="id" placeholder="ID da categoria">
+  <div class="container">
+    <header class="header">
+      <h1 class="title">{{ msg }}</h1>
+      <button @click="this.mostrarForm(true)" class="btn btn-primary">Nova Categoria</button>
+    </header>
 
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" v-model="nome" placeholder="Digite o nome da categoria">
+    <section v-if="formOn" class="form-container">
+      <form @submit.prevent="this.gravar()" class="form-card">
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input disabled type="text" id="id" v-model="id" placeholder="ID da categoria">
+        </div>
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" v-model="nome" placeholder="Digite o nome da categoria">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Cadastrar</button>
+          <button @click="this.mostrarForm(false)" type="button" class="btn btn-secondary">Cancelar</button>
+        </div>
+      </form>
+    </section>
 
-      <input type="submit" value="Cadastrar">
-    </form>
-    </div>
-   
+    <section class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="cat in categorias" :key="cat.id">
+            <td>{{ cat.id }}</td>
+            <td>{{ cat.nome }}</td>
+            <td class="actions">
+              <button @click="this.alterar(cat.id)" class="btn btn-warning">Alterar</button>
+              <button @click="this.apagar(cat.id)" class="btn btn-danger">Apagar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </div>
-
-  <div style="display:flex; justify-content:flex-end ;">
-    <button @click="this.mostrarForm(true)">Nova Categoria</button>
-  </div>
-  <table id="customers">
-    <thead>
-      <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th colspan="2">Ações</th>
-    </tr>
-    </thead>
-    
-    <tbody>
-      <tr v-for="cat in categorias">
-      <td>{{cat.id}}</td>
-      <td>{{cat.nome}}</td>
-      <td><button @click="this.alterar(cat.id)">Alterar</button></td>
-      <td><button @click="this.apagar(cat.id)">Apagar</button></td>
-    </tr>
-    </tbody>
-    
-    
-  </table>
 </template>
 
+
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   name: "FormCategoria",
   props: {
-    msg: String
+    msg: String,
   },
-  data(){
-    return {id:0, nome:"", formOn:false,
-      categorias:[]
-    }
-    
+  data() {
+    return {
+      id: 0,
+      nome: "",
+      formOn: false,
+      categorias: [],
+    };
   },
-  
-  methods:{
-    mostrarForm(flag)
-    {
+  methods: {
+    mostrarForm(flag) {
       this.formOn = flag;
     },
-    gravar(){
-
-      const url = 'http://localhost:8080/apis/categoria';
-      const data = {
-        id: this.id, nome: this.nome
-      };
-      if (id > 0)
-      {
-        axios.put(url, data)
-        .then(response => {
-          this.carregarDados();
-          
-        })
-        .catch(error => {
-          console.log('Erro:', error);
-        });
-      }
-      else
-      {
-        axios.post(url, data)
-        .then(response => {
-          this.carregarDados();
-        })
-        .catch(error => {
-          console.log('Erro:', error);
-        });
+    gravar() {
+      const url = "http://localhost:8080/apis/categoria";
+      const data = { id: this.id, nome: this.nome };
+      if (this.id > 0) {
+        axios
+          .put(url, data)
+          .then(() => this.carregarDados())
+          .catch((error) => console.log("Erro:", error));
+      } else {
+        axios
+          .post(url, data)
+          .then(() => this.carregarDados())
+          .catch((error) => console.log("Erro:", error));
       }
       this.id = 0;
       this.nome = "";
       this.mostrarForm(false);
     },
-    alterar(id){
+    alterar(id) {
       this.formOn = true;
-      axios.get("http://localhost:8080/apis/categoria/"+id)
-      .then(result =>{
-
-        const categoria = result.data;
-        this.id = categoria.id;
-        this.nome = categoria.nome;
-      })
-      .catch(error =>{
-
-      })
+      axios
+        .get(`http://localhost:8080/apis/categoria/${id}`)
+        .then((result) => {
+          const categoria = result.data;
+          this.id = categoria.id;
+          this.nome = categoria.nome;
+        })
+        .catch(() => {});
     },
-    apagar(id){
-      axios.delete("http://localhost:8080/apis/categoria/"+id)
-      .then(result =>{
-        this.carregarDados()
-      })
-      .catch(error =>{
-
-      })
-    }, 
-    carregarDados(){
-      axios.get("http://localhost:8080/apis/categoria")
-      .then(result =>{
-        this.categorias = result.data
-      })
-      .catch(error =>{
-
-      })
-    }
-    
+    apagar(id) {
+      axios
+        .delete(`http://localhost:8080/apis/categoria/${id}`)
+        .then(() => this.carregarDados())
+        .catch(() => {});
+    },
+    carregarDados() {
+      axios
+        .get("http://localhost:8080/apis/categoria")
+        .then((result) => (this.categorias = result.data))
+        .catch(() => {});
+    },
   },
-  mounted(){
+  mounted() {
     this.carregarDados();
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-input[type=text], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+<style>
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
 }
 
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.title {
+  font-size: 28px;
+  font-weight: bold;
 }
 
-input[type=submit]:hover {
-  background-color: #45a049;
+.form-container {
+  margin-bottom: 20px;
 }
 
-div {
-  border-radius: 5px;
-  background-color: #f2f2f2;
+.form-card {
+  background-color: #fff;
   padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
   width: 100%;
-}
-
-#customers td, #customers th {
+  padding: 10px;
   border: 1px solid #ddd;
-  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-#customers tr:nth-child(even){
-  background-color: #f2f2f2;
+button.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-#customers tr:hover {
-  background-color: #ddd;
-}
-
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
+.btn-primary {
+  background-color: #007bff;
   color: white;
 }
 
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b02a37;
+}
+
+.table-container {
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background-color: #343a40;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table tr:hover {
+  background-color: #e9ecef;
+}
+
+.actions button {
+  margin-right: 10px;
+}
 </style>

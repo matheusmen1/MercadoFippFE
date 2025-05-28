@@ -68,7 +68,7 @@ h2 {
 }
 
 .anuncio-card {
-  background: #f5f5f5;
+  background: #e9e9e9;
   margin-bottom: 15px;
   padding: 15px 20px;
   border-radius: 8px;
@@ -83,7 +83,7 @@ h2 {
 }
 .anuncio-card h3 {
   margin: 0 0 8px 0;
-  color: #04AA6D;
+  color: #333;
 }
 
 .date {

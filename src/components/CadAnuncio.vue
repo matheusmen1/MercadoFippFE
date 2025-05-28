@@ -29,12 +29,12 @@
             <input type="date" id="data" v-model="data" required>
           </div>
           <div class="form-group">
-            <label for="preco">Preço</label>
+            <label for="preco">Preço (Reais)</label>
             <input type="number" id="preco" v-model="preco" required>
           </div>
           <div class="form-group">
-            <label for="fotos">Foto</label>
-            <input type="file" id="fotos" v-file="fotos" required>
+            <label for="fotos">Foto (Até 3 fotos)</label>
+            <input type="file" id="fotos" @change="pegarFotos" multiple required>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn">Cadastrar</button>
@@ -54,9 +54,15 @@ export default {
   },
   data() {
     return {
+      titulo: "",
+      descricao: "",
+      preco: "",
+      data: "",
       Idcategoria:"",
+      Idusuario: "",
+      fotos:[],
       categoria:[]
-    };
+    }
   },
   methods: {
     buscarCategorias()
@@ -71,32 +77,65 @@ export default {
     },
     cadAnuncio() {
       const url = "http://localhost:8080/apis/anuncio";
-      let data = new FormData();
-      data.append("nome", this.nome);
-      data.append("senha", this.senha);
+      let formData = new FormData();
+      const anuncio ={
+        titulo: this.titulo,
+        descricao: this.descricao,
+        data: this.data,
+        preco: this.preco,
+        categoria: {
+          id: this.Idcategoria
+        },
+        usuario: {
+          id: this.Idusuario
+        },
+        perguntas:[]
+    
+      };
+     
+      formData.append("anuncio", new Blob([JSON.stringify(anuncio)], {type: "application/json"}));
+      this.fotos.forEach((foto) => {
+        formData.append("fotos", foto);
+      });
       axios
-      .post(url, data)
+      .post(url, formData, {
+        "Content-Type": "multipart/form-data"
+      })
       .then(response => {
         console.log(response)
-        localStorage.setItem("token", response.data)
-        this.$router.push('/menu').then(() => {
-        this.$root.verificarPrivilegio(); 
-        });
+        alert("Anúncio Cadastrado Com Sucesso")
     
       })
       .catch((error) =>{
         
-        alert("Dados inválidos")
+        alert("Erro ao Cadastrar Anúncio")
         console.log("Erro:", error)
       });
       
-      this.senha = "";
-      this.nome = "";
+      this.titulo = "";
+      this.descricao ="";
+      this.preco =  "";
+      this.data = "";
+      this.Idcategoria = "";
+      this.fotos = [];
+    },
+    pegarFotos(event)
+    {
+      this.fotos = Array.from(event.target.files).slice(0,3);  
     }
   },
+  
   mounted()
   {
     this.buscarCategorias();
+    const token = localStorage.getItem("token");
+    if(token)
+    {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(window.atob(base64));
+      this.Idusuario = payload.cod_usuario;
+    }
   },
 };
 </script>
@@ -140,6 +179,8 @@ export default {
 
 .form-group input,
 .form-group select {
+  
+  margin-top: 10px;
   padding: 8px;
   width: 100%;
   border: 1px solid #ccc;
@@ -148,7 +189,6 @@ export default {
 }
 
 input {
-  margin-top: 10px;
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;

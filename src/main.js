@@ -9,6 +9,7 @@ import Menu from './components/Menu.vue'
 import Logar from './components/Logar.vue'
 import Cadastrar from './components/Cadastrar.vue'
 import CadAnuncio from './components/CadAnuncio.vue'
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [

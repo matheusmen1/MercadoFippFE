@@ -44,11 +44,6 @@
 </template>
 
 <script>
-import FormCategoria from './components/FormCategoria.vue';
-import FormUsuario from './components/FormUsuario.vue';
-import TabAnuncio from './components/TabAnuncio.vue';
-import Logar from './components/Logar.vue'
-import Cadastrar from './components/Cadastrar.vue'
 
 export default {
   name: 'App',
@@ -58,13 +53,6 @@ export default {
       usuario: "",
       privilegio: '2',
     }
-  },
-  components: {
-    FormCategoria,
-    FormUsuario,
-    TabAnuncio,
-    Logar,
-    Cadastrar
   },
   methods: {
     verificarPrivilegio() {

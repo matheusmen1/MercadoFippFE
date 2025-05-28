@@ -4,11 +4,16 @@
     <ul class="anuncios-list">
       <li v-for="anuncio in anuncios" :key="anuncio.id" class="anuncio-card">
         <h3>{{ anuncio.titulo }}</h3>
-        <p class="date">{{ formatDate(anuncio.date) }}</p>
+        <img 
+        :src="`data:image/${anuncio.foto[0].extensao};base64,${anuncio.foto[0].arquivo}`" 
+        alt="Foto do anúncio" 
+        class="anuncio-imagem" 
+        />
+        <p class="date">{{ formatDate(anuncio.data) }}</p>
         <p class="descricao">{{ anuncio.descricao }}</p>
         <p class="preco">Preço: R$ {{ anuncio.preco.toFixed(2) }}</p>
-        <p class="categoria">Categoria: {{ anuncio.categoria }}</p>
-        <p class="usuario">Publicado por: {{ anuncio.usuario }}</p>
+        <p class="categoria">Categoria: {{ anuncio.categoria.nome }}</p>
+        <p class="usuario">Publicado por: {{ anuncio.usuario.nome }}</p>
       </li>
     </ul>
   </div>
@@ -26,8 +31,9 @@ export default {
   },
   methods: {
     carregarAnuncios() {
-      axios.get('http://localhost:8080/apis/anuncios?limit=5')
+      axios.get('http://localhost:8080/apis/anuncio')
         .then(response => {
+          console.log(response.data); 
           this.anuncios = response.data;
         })
         .catch(error => {
@@ -49,7 +55,6 @@ export default {
 .menu-container {
   max-width: 800px;
   margin: 30px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h2 {
@@ -69,7 +74,13 @@ h2 {
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
+.anuncio-imagem {
+  width: 50%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
 .anuncio-card h3 {
   margin: 0 0 8px 0;
   color: #04AA6D;

@@ -29,11 +29,11 @@
             <input type="date" id="data" v-model="data" required>
           </div>
           <div class="form-group">
-            <label for="preco">Preço (Reais)</label>
+            <label for="preco">Preço</label>
             <input type="number" id="preco" v-model="preco" required>
           </div>
           <div class="form-group">
-            <label for="fotos">Foto (Até 3 fotos)</label>
+            <label for="fotos">Foto</label>
             <input type="file" id="fotos" @change="pegarFotos" multiple required>
           </div>
           <div class="form-actions">
@@ -103,7 +103,7 @@ export default {
       })
       .then(response => {
         console.log(response)
-        alert("Anúncio Cadastrado Com Sucesso")
+        this.$router.push('/menu')
     
       })
       .catch((error) =>{
@@ -146,7 +146,6 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background-color: #f4f4f4; 
 }
 
 .form-wrapper {

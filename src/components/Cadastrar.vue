@@ -99,8 +99,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh; 
-  background-color: #f4f4f4; 
+  min-height: 80vh;
 }
 
 .form-wrapper {

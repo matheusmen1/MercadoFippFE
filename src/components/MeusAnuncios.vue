@@ -135,6 +135,7 @@ h2 {
 
 .anuncio-detalhes {
   text-align: center;
+  white-space: nowrap;
 }
 
 .anuncio-detalhes h3 {
@@ -146,7 +147,6 @@ h2 {
 .anuncio-detalhes .preco {
   color: #333;
   font-size: 1rem;
-  margin-right: 50%;
   font-weight: bold;
   white-space: nowrap;
 }

@@ -6,14 +6,14 @@
       </header>
 
       <section class="form-container">
-        <form @submit.prevent="this.gravar()" class="form-card">
+        <form @submit.prevent="this.cadastrar()" class="form-card">
           <div class="form-group">
             <label for="nome">Nome</label>
-            <input type="text" id="nome" v-model="nome">
+            <input type="text" id="nome" v-model="nome" required>
           </div>
           <div class="form-group">
             <label for="senha">Senha</label>
-            <input type="password" id="senha" v-model="senha">
+            <input type="password" id="senha" v-model="senha" required>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn">Cadastrar</button>
@@ -25,72 +25,42 @@
   </div>
 </template>
 
-
-
 <script>
 import axios from "axios";
 export default {
-  name: "Logar",
+  name: "Cadastrar",
   props: {
     msg: String,
   },
   data() {
     return {
-      id: 0,
       nome: "",
-      formOn: false,
-      categorias: [],
-    };
+      senha:"",
+      nivel: "1"
+    }
   },
   methods: {
-    mostrarForm(flag) {
-      this.formOn = flag;
-    },
-    gravar() {
-      const url = "http://localhost:8080/apis/categoria";
-      const data = { id: this.id, nome: this.nome };
-      if (this.id > 0) {
-        axios
-          .put(url, data)
-          .then(() => this.carregarDados())
-          .catch((error) => console.log("Erro:", error));
-      } else {
-        axios
-          .post(url, data)
-          .then(() => this.carregarDados())
-          .catch((error) => console.log("Erro:", error));
-      }
-      this.id = 0;
+
+    cadastrar() {
+      const url = "http://localhost:8080/apis/usuario";
+      const data = { nome: this.nome,  senha: this.senha, nivel: this.nivel };
+      axios
+      .post(url, data)
+      .then(response => {
+        console.log(response)
+        this.$router.push('/logar/Acessar Conta')
+
+      })
+      .catch((error) =>{
+        alert("Dados inválidos")
+        console.log("Erro:", error)
+      });
+
+      this.senha = "";
       this.nome = "";
-      this.mostrarForm(false);
-    },
-    alterar(id) {
-      this.formOn = true;
-      axios
-        .get(`http://localhost:8080/apis/categoria/${id}`)
-        .then((result) => {
-          const categoria = result.data;
-          this.id = categoria.id;
-          this.nome = categoria.nome;
-        })
-        .catch(() => {});
-    },
-    apagar(id) {
-      axios
-        .delete(`http://localhost:8080/apis/categoria/${id}`)
-        .then(() => this.carregarDados())
-        .catch(() => {});
-    },
-    carregarDados() {
-      axios
-        .get("http://localhost:8080/apis/categoria")
-        .then((result) => (this.categorias = result.data))
-        .catch(() => {});
-    },
-  },
-  mounted() {
-    this.carregarDados();
-  },
+    }
+  }
+
 };
 </script>
 

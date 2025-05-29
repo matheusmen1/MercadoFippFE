@@ -103,7 +103,7 @@ export default {
       })
       .then(response => {
         console.log(response)
-        this.$router.push('/menu')
+        this.$router.push('/')
     
       })
       .catch((error) =>{

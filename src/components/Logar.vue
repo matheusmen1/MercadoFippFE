@@ -48,7 +48,7 @@ export default {
       .then(response => {
         console.log(response)
         localStorage.setItem("token", response.data)
-        this.$router.push('/menu').then(() => {
+        this.$router.push('/').then(() => {
         this.$root.verificarPrivilegio(); 
         });
     

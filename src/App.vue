@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <div class="navbar-left">
-        <router-link to="/menu" class="navbar-link">
+        <router-link to="/" class="navbar-link">
           <img src="./assets/logo.jpg" alt="Logo" class="navbar-logo">
           <span class="brand-title">MercadoFipp</span>
         </router-link>
@@ -18,7 +18,7 @@
         <div v-if="this.autenticacao" class="dropdown">
           <button style="font-size: 20px;" class="dropbtn">Olá, {{ this.usuario }}</button>
           <div class="dropdown-content">
-            <router-link to="/logar/Acessar Conta"> Meus Anúncios </router-link>
+            <router-link to="/meus-anuncios"> Meus Anúncios </router-link>
             <a @click="this.logout()"> Sair</a>
           </div>
         </div>
@@ -83,7 +83,9 @@ export default {
       localStorage.removeItem("token");
       this.autenticacao = false;
       this.privilegio = '2';
-      this.$router.push('/menu')
+      this.$router.push('/').then(() => {
+        this.$router.go();
+      });
     },
   },
   mounted() {

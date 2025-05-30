@@ -47,6 +47,7 @@
 
 <script>
 import axios from "axios";
+import {h} from "vue";
 export default {
   name: "CadAnuncio",
   props: {
@@ -98,8 +99,10 @@ export default {
         formData.append("fotos", foto);
       });
       axios
-      .post(url, formData, {
-        "Content-Type": "multipart/form-data"
+      .post(url, formData,  {
+        "Content-Type": "multipart/form-data",
+        headers: { Authorization: localStorage.getItem("token") }
+
       })
       .then(response => {
         console.log(response)

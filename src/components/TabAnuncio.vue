@@ -54,7 +54,7 @@ export default {
   methods:{
     
     apagar(id){
-      axios.delete("http://localhost:8080/apis/anuncio/"+id)
+      axios.delete("http://localhost:8080/apis/anuncio/"+id, { headers: { Authorization: localStorage.getItem("token") } })
       .then(result =>{
         this.carregarDados()
       })
@@ -112,43 +112,6 @@ button.btn {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background-color: #218838;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-.btn-warning {
-  background-color: #ffc107;
-  color: black;
-}
-
-.btn-warning:hover {
-  background-color: #e0a800;
-}
-
 .btn-danger {
   background-color: #dc3545;
   color: white;

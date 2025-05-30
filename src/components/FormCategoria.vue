@@ -71,12 +71,12 @@ export default {
       const data = { id: this.id, nome: this.nome };
       if (this.id > 0) {
         axios
-          .put(url, data)
+          .put(url, data, { headers: { Authorization: localStorage.getItem("token") } })
           .then(() => this.carregarDados())
           .catch((error) => console.log("Erro:", error));
       } else {
         axios
-          .post(url, data)
+          .post(url, data, { headers: { Authorization: localStorage.getItem("token") } })
           .then(() => this.carregarDados())
           .catch((error) => console.log("Erro:", error));
       }
@@ -97,7 +97,7 @@ export default {
     },
     apagar(id) {
       axios
-        .delete(`http://localhost:8080/apis/categoria/${id}`)
+        .delete(`http://localhost:8080/apis/categoria/${id}`, { headers: { Authorization: localStorage.getItem("token") } })
         .then(() => this.carregarDados())
         .catch(() => {});
     },

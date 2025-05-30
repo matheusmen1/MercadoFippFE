@@ -119,6 +119,7 @@ h2 {
   align-items: center;
   gap: 10px;
   transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #ccc;
 }
 
 .anuncio-container:hover {

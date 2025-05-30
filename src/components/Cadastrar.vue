@@ -52,7 +52,7 @@ export default {
 
       })
       .catch((error) =>{
-        alert("Dados inválidos")
+        alert("Nome Já Cadastrado")
         console.log("Erro:", error)
       });
 

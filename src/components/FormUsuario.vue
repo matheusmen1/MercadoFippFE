@@ -19,6 +19,7 @@
           <label for="senha">Senha</label>
           <input type="password" id="senha" v-model="senha" placeholder="Digite a sua senha">
         </div>
+
         <div class="form-group">
           <label for="nivel">Nível</label>
           <input type="number" id="nivel" v-model="nivel" placeholder="Digite seu nível">
@@ -114,7 +115,7 @@ export default {
     },
     alterar(id){
       this.formOn = true;
-      axios.get("http://localhost:8080/apis/usuario/"+id)
+      axios.get("http://localhost:8080/apis/usuario/"+id,)
       .then(result =>{
 
         const usuario = result.data;
@@ -128,7 +129,7 @@ export default {
       })
     },
     apagar(id){
-      axios.delete("http://localhost:8080/apis/usuario/"+id)
+      axios.delete("http://localhost:8080/apis/usuario/"+id, { headers: { Authorization: localStorage.getItem("token") } })
       .then(result =>{
         this.carregarDados()
       })

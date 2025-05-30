@@ -23,7 +23,7 @@ const router = createRouter({
      { path: '/cadastrar/:msg', component: Cadastrar, props: true},
      { path: '/cad-anuncio/:msg', component: CadAnuncio, props: true},
      { path: '/meus-anuncios', component: MeusAnuncios, props: true},
-     {path: '/ver-anuncio/:id', name: 'ver-anuncio', component: VerAnuncio, props: true}
+     { path: '/ver-anuncio/:id', name: 'ver-anuncio', component: VerAnuncio, props: true}
 
     ]
     });

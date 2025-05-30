@@ -47,7 +47,6 @@
 
 <script>
 import axios from "axios";
-import {h} from "vue";
 export default {
   name: "CadAnuncio",
   props: {
